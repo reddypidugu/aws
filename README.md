@@ -1,6 +1,6 @@
 # Auto Deploymemnt of EKS Infrastructure on AWS
 
-##Project Content
+## Project Content
 This project contains the three modules
 * **cluster-autoscaler**: Contains yaml file of cluster-autoscaler 
 * **metrics-server**: Contains metrics server yaml files to deploy the metrics server. This server is needed to collect the metrics from pods in kubernetes cluster.
@@ -19,12 +19,12 @@ There are 2 ways we can deploy EKS cluster on AWS
 #### Eksctl tool: 
 * It's a new CLI tool from AWS to create EKS clusters. It uses CloudFormation in background to create the clusters.
 
-####Terraform: 
+#### Terraform: 
 * Its another popular IaC (Infrastructure as Code) tool to create infrastructure in declarative way. Using this tool 
   we can create servers, clusters or any other infra on any on-premises, AWS, Azure, GCP, IBM Cloud and many more.
   It is much useful when your organization has hybrid-cloud environments.
 
-##Creating EKS cluster Using `eksctl`
+## Creating EKS cluster Using `eksctl`
 - Prerequisite: ekstl cli tool needs to be installed on laptop. 
 
 To create cluster
@@ -55,7 +55,7 @@ nodeGroups:
     desiredCapacity: 2
 ````
 
-##Creating EKS cluster with Terraform Scripts
+## Creating EKS cluster with Terraform Scripts
  - Prerequisite: kubectl & aws-iam-authenticator cli tools need installed on laptop.
  
 There are terraform scripts in "tf-eks-demo" folder. By running the following commands terraform creates
@@ -89,7 +89,7 @@ terraform output config-map-aws-auth > config-map-aws-auth.yaml
 kubectl apply -f config-map-aws-auth.yaml  
 ````
 
-##Deploying Cluster AutoScaler
+## Deploying Cluster AutoScaler
 Before deploying Cluster Auto Scaler, we need to create AutoScaling Policy & attached to worker node group which is needed to 
 access the worker nodes and auto scale whenever needed.
 
