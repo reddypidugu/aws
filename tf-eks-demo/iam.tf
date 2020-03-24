@@ -48,20 +48,7 @@ resource "aws_iam_role_policy" "demo-cluster-service-linked-role" {
                 "ec2:DescribeAccountAttributes"
             ],
             "Resource": "*"
-        },
-        {
-            “Effect”: “Allow”,
-            “Action”: [
-                “autoscaling:DescribeAutoScalingGroups”,
-                “autoscaling:DescribeAutoScalingInstances”,
-                “autoscaling:DescribeLaunchConfigurations”,
-                “autoscaling:DescribeTags”,
-                “autoscaling:SetDesiredCapacity”,
-                “autoscaling:TerminateInstanceInAutoScalingGroup”
-            ],
-            “Resource”: “*”
         }
-
     ]
 }
 EOF
