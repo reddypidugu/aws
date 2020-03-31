@@ -1,9 +1,9 @@
-resource "aws_eks_cluster" "demo" {
+resource "aws_eks_cluster" "demo-cluster" {
   name     = var.cluster-name
-  role_arn = aws_iam_role.demo-cluster.arn
+  role_arn = aws_iam_role.demo-cluster-role.arn
 
   vpc_config {
-    security_group_ids = [aws_security_group.demo-cluster.id]
+    security_group_ids = [aws_security_group.demo-cluster-group.id]
     subnet_ids = module.vpc.public_subnets
   }
 
