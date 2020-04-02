@@ -2,9 +2,10 @@
 
 ## Project Content
 This project contains the three modules
-* **cluster-autoscaler**: Contains yaml file of cluster-autoscaler 
-* **metrics-server**: Contains metrics server yaml files to deploy the metrics server. This server is needed to collect the metrics from pods in kubernetes cluster.
-* **tf-eks-demo**: Contains terraform scripts to deploy infrastructure in declarative fotmat. 
+* **cluster-autoscaler**: Contains yaml file of cluster-autoscaler to scale out ans scale down the EKS cluster nodes. 
+* **metrics-server**: Contains metrics server yaml files to deploy the metrics server. This server is needed to collect the metrics from pods.
+* **tf-eks-demo**: Contains terraform scripts to deploy infrastructure in declarative format. 
+* **HPA(Horizontal Pod Autoscaler)**: - To scale out and scale down the pods on nodes.
 
 We create the following infrastructure on AWS with the instructions given below.
 - EC2 Instances
@@ -21,8 +22,8 @@ There are 2 ways we can deploy EKS cluster on AWS
 
 #### Terraform: 
 * Its another popular IaC (Infrastructure as Code) tool to create infrastructure in declarative way. Using this tool 
-  we can create servers, clusters or any other infra on any on-premises, AWS, Azure, GCP, IBM Cloud and many more.
-  It is much useful when your organization has hybrid-cloud environments.
+  we can create servers, clusters or any other infra on on-premises, AWS, Azure, GCP, IBM Cloud and many more.
+  It is much useful when your organization has hybrid/multi-cloud environment.
 
 ## Creating EKS cluster Using `eksctl`
 - Prerequisite: ekstl cli tool needs to be installed on laptop. 
@@ -56,18 +57,18 @@ nodeGroups:
 ````
 
 ## Creating EKS cluster with Terraform Scripts
- - Prerequisite: kubectl & aws-iam-authenticator cli tools need installed on laptop.
+ - Prerequisite: kubectl & aws-iam-authenticator cli tools need to be installed on laptop.
  
 There are terraform scripts in "tf-eks-demo" folder. By running the following commands terraform creates
 EC2 instance and EKS cluster for us in the desired region. All the required configs are defined in respective script, 
-like IAM roles, Policies, security groups, etc
+like IAM roles, policies, security groups, etc.
 Before executing the below scripts the user must have created an IAM role and needs to be configured
-on his laptop. Else the access_keys needs to be configured in terraform script.
+on his laptop. Else the access_key & secret_key needs to be configured in terraform script.
 
 ````
-terraform init
-terraform plan
-terraform apply
+terraform init   //to initialize terraform 
+terraform plan   //to review the tf scripts and to make the plan by terraform
+terraform apply  //final command to execute the provision of infra on cloud or on-premise
 ```` 
 The deployment of infra will take at least 15 min.
 
@@ -76,14 +77,14 @@ To execute further commands the following CLI tools needs to be installed on lap
 * aws-iam-authenticator - To connect with AWS cloud with IAM roles in a secured way.
 
 Once the cluster is up and running, we need to run the following commands to get configurations of EKS and 
-connection with AWS cloud
+to connect with AWS cloud
 
 The below commands needs to be executed to copy the EKS configuration to kubectl cli tool to get conenct with Kubernetes
 ````
 terraform output kubeconfig > ~/.kube/config 
 aws eks --region us-east-1 update-kubeconfig --name terraform-eks-demo
 ````
-The below command to get config details of authentication with AWS
+The below command to get config details of authentication with AWS & deploy the config map deployment.
 ````
 terraform output config-map-aws-auth > config-map-aws-auth.yaml  
 kubectl apply -f config-map-aws-auth.yaml  
@@ -93,7 +94,7 @@ kubectl apply -f config-map-aws-auth.yaml
 Before deploying Cluster Auto Scaler, we need to create AutoScaling Policy & attached to worker node group which is needed to 
 access the worker nodes and auto scale whenever needed.
 
-Add autoscaling Policy to the worker node
+Add autoscaling Policy to the worker node. It can be done via Terraform script as well.
 
 Goto
 AWS Console ->
@@ -207,4 +208,8 @@ There are configurations set on cluster-autoscaler.yaml file to when to scale up
             - --skip-nodes-with-system-pods=false
 ````
  
-
+To undeploy infra on, first delete the manually cretaed security group policy and run the following command. This will ensure all the infra is deleted
+````
+cd tf-eks-demo
+terraform destroy
+````
