@@ -1,4 +1,4 @@
-# Auto Deploymemnt of EKS Infrastructure on AWS Terraform
+# Auto Deploymemnt of EKS Infrastructure on AWS with Terraform
 
 ## Project Content
 This project contains the three modules
